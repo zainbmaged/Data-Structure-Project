@@ -28,5 +28,4 @@ know much about the project.
          
          
          
-### Hint : How to Write in Readme file
-[How to write in Readme file](https://write.geeksforgeeks.org/).
+### Hint : [How to write in Readme file](https://write.geeksforgeeks.org/).
