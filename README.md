@@ -26,6 +26,7 @@ know much about the project.
   - The report should contain a references section where the resources that you have
          used during the project are listed.
          
-         
+## References:
+1-for syntax : [https://www.geeksforgeeks.org/c-string-class-and-its-applications/]
          
 ### Hint : [How to write in Readme file](https://write.geeksforgeeks.org/).
