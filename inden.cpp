@@ -32,63 +32,49 @@ string take_file(){
 }
 
 
+Node * parsing()
+{ str1 = take_file();
+    Node *tem;
+    Node *root=new Node;
+    stack <Node*> st;
+    int i=0;
+    int lev=0;
+    while(true){ //iterating on all the characters of the file
+    tem=new Node;
+    char c;
+    c=str1[i++];
+    if(c=='<' && str1[i]!='/' )// opening tag
+    {  c=str1[i++];
+        string name;
+        while (c!='>') {name+=c;c=str1[i++];}
+      tem->tagName=name;
+       if(st.empty()) {root=tem; st.push(root); st.top()->level=0;}
+       else {st.top()->children.push_back(tem);st.push(tem);st.top()->level=lev+1;}
 
-vector <string> prettify(string name)
-{ //vector<string> check;
-   // string parent= "<users>";
-    //tring children1= "<user>";
-    //ing children2= "<name>";
-    //string children3= "<id>" ;
-   // string children4= "<posts>";
-    //string children5= "<post>" ;
-    //string children6= "<body>" ;
-    //string children7= "<topic>" ;
-    //string children8= "<topics>" ;
-   // string children9= "<followers>" ;
-    //string children10= "<follower>" ;
-std::stack<string> *ch;
-//stack *ch;
- vector <string> tem=readxml(name);
-//vector<string>::iterator itr;
-for (int y = 0; y < tem.size();y++)
-{ int i ;
-
-if ((tem[y].find("<users>"))||(tem[y].find("</users>"))) {cout << tem[y] << endl;}
-if ((tem[y].find("<user>"))||(tem[y].find("</user>"))) {cout<< "\t"<<endl;cout << tem[y] << endl;}
-if ((tem[y].find("<id>"))||(tem[y].find("</id>"))|| (tem[y].find("<posts>"))||(tem[y].find("</posts>"))||(tem[y].find("<name>"))||(tem[y].find("</name>"))|| (tem[y].find("<followers>"))||(tem[y].find("</followers>"))) { if(tem[y].find("<id>")||(tem[y].find("</id>"))) { if(ch->top()=="<follower>") {ch->pop();cout<<"\t"<<"\t"<<"\t"<< "\t"<< endl;cout << tem[y] << endl;}} cout<< "\t"<<"\t"<<endl; cout <<tem[y]<<endl;}
-if ((tem[y].find("<post>"))||(tem[y].find("</post>"))||(tem[y].find("<follower>"))||(tem[y].find("</follower>",y))) { if(tem[y].find("<follower>",y)){ch->push("<follower>");cout<< "\t"<<"\t"<<"\t" <<endl;cout << tem[y] << endl;}}
-if ((tem[y].find("<body>"))||(tem[y].find("</body>"))|| (tem[y].find("<topics>"))||(tem[y].find("</topics>",y))) {cout<< "\t"<<"\t"<<"\t"<< "\t"<< endl;cout << tem[y] << endl;}
-if ((tem[y].find("<topic>"))||(tem[y].find("</topic>"))) {cout<< "\t"<<"\t"<<"\t"<< "\t"<<"\t"<<endl; cout << tem[y] << endl;}
-
-}
-}
-//vector <string>::iterator it;
-/*for (int y = 0; y < tem.size();y++)
-{ it= find(tem.begin(),tem.end(),"</");
-if(it==tem.end())
-{cout<< "\t"<<endl;
- cout << tem[y] << endl;}
-
-   // int i= tem[y].find("<",y);
-    //int j=tem[y].find(">",i+1);
-}} if(tem.find("<id>",y)||if(tem.find("</id>",y)) {if(ch->top()=="<follower>")  cout<< "\t"<<"\t"<<"\t"<< "\t"<< endl; cout <<tem[y]<<endl;}}}
-*/
-/*for (int y = 0; y < tem.size();)
-   {  int i= tem[y].find("<",y);
-       while (i!= tem[y].size())
-       {int j=tem[y].find(">",i+1);
-      check.push_back(tem[y].substr(i,j-i+1));
-        y=j+1;
-        i= tem[y].find("<",y);}
-   } return tem;}
- //if (line.find("<",y))
-    {
-        if (line.find("</"))
-            cout<< " /t"<< endl;
     }
-       check.push(tem[y]);
-        if (closing tag) pass;
-else increase identation;
+    else if(c=='<'&&str1[i]=='/')//closing tag
+        {
+            lev--;
+            st.pop();
+            while(c!='>')c=str1[i++];
+            if(st.empty())break;
+        }
+
+    else if(c=='<' && str1[i]=='?') // xml prolog
+    {
+        while(c!='>') c=str1[i++];
+    }
+    else if (c=='<' && str1[i]=='!') // comment
+    {
+        while(c!='>') c=str1[i++];
+    }
 
 
-}*/
+    else { // taking text
+        string text;
+       while (c!='<') {text+=c;c=str1[i++];}i--;st.top()->tagValue=text;}
+    }
+     return root;
+
+
+}
