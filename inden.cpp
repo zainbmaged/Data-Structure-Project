@@ -1,46 +1,36 @@
-
 #include <iostream>
-#include <fstream>
-#include <sstream>
-#include <vector>
 #include <string>
+#include <vector>
 #include <stack>
-#include <algorithm>
 
 using namespace std;
-vector <string> readxml(string name);
-vector <string> prettify(string name);
 
-int main(void)
-{
-    vector <string> contents= prettify("sample.xml");
-  //  for (int y = 0; y < contents.size(); y++)
-    //    cout << contents[y] << endl;
+class Node{
+public:
+string tagName;
+string tagValue;
+int level;
+vector<Node*> children;
 
+};
+
+string str1 ;
+
+
+string take_file(){
+    freopen("sample.xml","r",stdin);
+
+    string s="";
+
+    while (!feof(stdin)){ // taking lines from the file and make it one line string
+        string k;
+        getline(cin,k);
+        s+=k;
+    }
+
+    return s;
 }
 
-vector <string> readxml(string name)
-    {
-        vector <string> contents;
-        string file_name = name;
-        ifstream xmlfile;
-        xmlfile.open(file_name);
-        if (xmlfile.fail())
-        {
-            cout << "file failed to open " << endl;
-
-        }
-        string line, word;
-        while (!xmlfile.eof())//till end of file
-        {   //read line by line
-            getline(xmlfile, line);
-            contents.push_back(line);
-
-
-        }
-        xmlfile.close();
-        return contents;
-    }
 
 
 vector <string> prettify(string name)
