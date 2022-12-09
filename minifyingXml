@@ -1,0 +1,28 @@
+#include <iostream>
+#include <regex>
+#include <string>
+using namespace std;
+
+string minifying (string str) // input string that is read from xml file
+{
+    string newStr = regex_replace(str, regex("  "), "");                   // remove every double space 
+    string nnewStr = regex_replace(newStr, regex("\n"), "");              // remove any new line
+    string nnnewStr = regex_replace(nnewStr, regex("> <"), "><");        // remove any space between tags
+    //cout << nnnewStr << endl;
+    return nnnewStr ;                                                  // return the minified string
+}
+
+// code to test the above function 
+
+
+int main()
+{
+    string str = "<users>\n <user>\n   <id>1</id>\n     <name>Ahmed Ali</name>\n       <posts>\n           <post>\n               <body>\n                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat \n              </body>              <topics>                <topic>";                      
+  //string elly hn2rah
+     string l= minifying (str);                     // how it is called
+      cout <<l << endl ;
+    return 0;
+}
+
+
+
