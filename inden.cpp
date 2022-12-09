@@ -78,3 +78,38 @@ Node * parsing()
 
 
 }
+
+void prettify(Node *tem, int presize=0)
+{
+    for(int i=0;i<presize;i++)
+        cout<<"\t";
+    cout<< "<"<<tem->tagName;
+    cout<<">"<<endl;
+    if(tem->tagValue.size())
+    {
+        for(int i=0;i<presize+1;i++)
+            cout<<"\t";
+        cout<< tem->tagValue<<" "<<endl;
+
+    }
+    for(auto x:tem->children)
+    {
+        prettify(x, presize+1);
+    }
+    for(int i=0;i<presize;i++)
+        cout<<"\t";
+    cout<<"</" <<tem->tagName<< ">" << endl;
+}
+
+
+
+int main() {
+
+
+    Node* r = parsing();
+    prettify(r,0);
+
+
+    return 0;
+}
+
