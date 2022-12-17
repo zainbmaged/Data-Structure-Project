@@ -49,7 +49,7 @@ Node * parsing()
         while (c!='>') {name+=c;c=str1[i++];}
       tem->tagName=name;
        if(st.empty()) {root=tem; st.push(root); st.top()->level=0;}
-       else {st.top()->children.push_back(tem);st.push(tem);st.top()->level=lev+1;}
+       else {st.top()->children.push_back(tem);st.push(tem);st.top()->level=++lev;}
 
     }
     else if(c=='<'&&str1[i]=='/')//closing tag
