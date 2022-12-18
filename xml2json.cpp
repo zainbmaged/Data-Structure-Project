@@ -14,12 +14,13 @@ using namespace std;
 string readxml(string name); // read xml
 void tags(string xmlstring); // save all tags and values in global vector tags
 void xmljson(vector <string> tag); // save json tags and value in global vector jsons
-
+string print_json(vector <string> jsons);// for printing json and return json in one string 
 // Global variables-----------------------------------------------------------------------------------------------------------------------------------------------
 
 stack <string> temp;//for close bracket tags
 vector <string> tag;// vector saving tags
 vector <string> jsons; // for json tages
+stringstream json; //stringstream to output json
 
 //driver function--------------------------------------------------------------------------------------------------------------------------------------------------
 
