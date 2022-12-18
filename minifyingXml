@@ -21,10 +21,6 @@ string minifying(string str) // function takes a string XML and minifies it
 
 
 
-
-
-
-
 int main() //main function
 {
     
@@ -62,7 +58,10 @@ int main() //main function
     return 0;
 
 
-}
+}  
+
+
+                                                                                                                                                                                                                                                                                                                                                  
 void readxml(string name)  //function to convert xml file into a vector
 {
     string file_name = name;
