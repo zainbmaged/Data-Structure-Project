@@ -34,8 +34,9 @@ int main() //main function
     }
 
     std::string s(out.str());
-    string l = minifying(s);                    //  minifying function is called and the xml string optained from vector conversion is sent as a parameter
-   
+    string l = minifying(s);       //  minifying function is called and the xml string optained from vector conversion is sent as a parameter                                                                                                                                                                                                                 
+    //to print the minified string                                                                                                                                                                                                                                                                                                                                           
+    cout << l;  
     //code to convert string to file
     fstream file;
     file.open("FILE.txt", ios_base::out);
