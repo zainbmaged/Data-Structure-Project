@@ -43,7 +43,7 @@ vector<Node*> parsing()
     char c;
 
     c=str1[i++];
-    if(c=='<' && str1[i]!='/' )// opening tag
+  if(c=='<' && str1[i]!='/' )// opening tag
     {  c=str1[i++];
         string name;
         while (c!='>') {name+=c;c=str1[i++];}
@@ -62,7 +62,7 @@ vector<Node*> parsing()
          i--; tem[nUsers]->id=text;
          }
          if (name=="name")
-         { string text;// c=str1[i++];
+         { string text; c=str1[i++];
           while (c!='<') {text+=c;c=str1[i++];}i--;
           tem[nUsers]->name=text;
          }
@@ -113,7 +113,8 @@ vector<Node*> parsing()
 
 
    if(c=='<'&&str1[i]=='/') //closing tag
-      {while(c!='>')c=str1[i++];i--;}
+      {  c=str1[i++];
+          while(c!='<')c=str1[i++];i--;}
 
         } return tem;}
 
