@@ -67,14 +67,14 @@ vector <string> tags(string xmlstring) {
 	{
 		string tag_name = "";
 		string tag_value = "";
-		//for opening tags
+		//for  tags
 		if (xmlstring[i] == '<') {
-			// save opening tag name
+			// save opening tag name and closing tag name/
 			for (i = i + 1; xmlstring[i] != '>'; i++)
 			{
 				tag_name = tag_name + xmlstring[i];
 			}
-			//push opening tag into the vector
+			//push  tag into the vector
 			tag.push_back(tag_name);
 
 
