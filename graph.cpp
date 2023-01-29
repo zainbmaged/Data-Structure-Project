@@ -41,7 +41,7 @@ vector<Node*> parsing()
     vector<Node*> tem;
 
     int i=0;
-    while(true){
+    for (int v = 0; v < str1.length(); v++){
     char c;
     c=str1[i++];
     if(c=='<' && str1[i]!='/' )// opening tag
@@ -80,9 +80,7 @@ vector<Node*> parsing()
          {string  body; c=str1[i++];
               while (c!='<') {body+=c;c=str1[i++];}i--;
            tem[nUsers-1]->postBody.push_back(body);
-
          }
-
          if (name=="topics")
          {
               while(c!='<') c=str1[i++];i--;
@@ -90,14 +88,14 @@ vector<Node*> parsing()
          if (name=="topic")
          {string  topic; c=str1[i++];
              while (c!='<') {topic+=c;c=str1[i++];}i--;
-
           tem[nUsers-1]->postTopic.push_back(topic);
          }
          if (name=="followers")
          {
               while(c!='<') c=str1[i++];i--;
          }
-         if (name=="follower")
+        
+ if (name=="follower")
          { string follow;c=str1[i++];
               while(c!='<') c=str1[i++]; i--;
           c=str1[i++];
@@ -110,15 +108,14 @@ vector<Node*> parsing()
        while (c!='<') {fId+=c;c=str1[i++];}i--;
        tem[nUsers-1]->follower.push_back(fId);}}
        }
-    }
-
 
    if(c=='<'&&str1[i]=='/') //closing tag
-      {  
+      {
           while(c!='<')c=str1[i++];i--; }
        }
 
-        return tem;}
+        }return tem;}
+
 
 void addEdge(vector<int> adj[],int first,int second)
 {
