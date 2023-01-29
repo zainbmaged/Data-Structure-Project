@@ -34,16 +34,19 @@ vector<string> follower;
 
 
 
+
 vector<Node*> parsing()
-{ str1 = take_file();
+//int main()
+{
+    str1 = take_file();
+    
     vector<Node*> tem;
+  
     int i=0;
-
     while(true){
-    char c;
-
+    char c; 
     c=str1[i++];
-  if(c=='<' && str1[i]!='/' )// opening tag
+    if(c=='<' && str1[i]!='/' )// opening tag
     {  c=str1[i++];
         string name;
         while (c!='>') {name+=c;c=str1[i++];}
@@ -52,19 +55,21 @@ vector<Node*> parsing()
               while(c!='<')c=str1[i++];i--;
          }
         if (name=="user")
-        {nUsers++; tem.push_back(new Node);
+        {
+            nUsers++; tem.push_back(new Node);
             while(c!='<')c=str1[i++];i--;
         }
 
         if (name=="id")
-         { string text; c=str1[i++];
+         {   string text; c=str1[i++];
           while (c!='<') {text+=c;c=str1[i++];}
-         i--; tem[nUsers]->id=text;
+         i--; tem[nUsers-1]->id=text;
          }
          if (name=="name")
-         { string text; c=str1[i++];
-          while (c!='<') {text+=c;c=str1[i++];}i--;
-          tem[nUsers]->name=text;
+         { string mi; c=str1[i++];
+          while (c!='<') {mi+=c;c=str1[i++];}i--;
+          tem[nUsers-1]->name=mi;
+
          }
          if (name=="posts")
          {
@@ -77,7 +82,7 @@ vector<Node*> parsing()
          if (name=="body")
          {string  body;
               while (c!='<') {body+=c;c=str1[i++];}i--;
-           tem[nUsers]->postBody.push_back(body);
+           tem[nUsers-1]->postBody.push_back(body);
 
          }
 
@@ -89,7 +94,7 @@ vector<Node*> parsing()
          {string  topic;
              while (c!='<') {topic+=c;c=str1[i++];}i--;
 
-          tem[nUsers]->postTopic.push_back(topic);
+          tem[nUsers-1]->postTopic.push_back(topic);
          }
          if (name=="followers")
          {
@@ -106,7 +111,7 @@ vector<Node*> parsing()
          c=str1[i++];
         string fId;
        while (c!='<') {fId+=c;c=str1[i++];}i--;
-       tem[nUsers]->follower.push_back(fId);}}
+       tem[nUsers-1]->follower.push_back(fId);}}
 
        }
     }
@@ -115,8 +120,8 @@ vector<Node*> parsing()
    if(c=='<'&&str1[i]=='/') //closing tag
       {  c=str1[i++];
           while(c!='<')c=str1[i++];i--;}
-
-        } return tem;}
+        } return tem;
+        }
 
 void addEdge(vector<int> adj[],int first,int second)
 {
