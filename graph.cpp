@@ -114,7 +114,7 @@ vector<Node*> parsing()
 
 
    if(c=='<'&&str1[i]=='/') //closing tag
-      {  c=str1[i++];
+      {  
           while(c!='<')c=str1[i++];i--; }
        }
 
