@@ -1,0 +1,73 @@
+class Node {
+public:
+    string id;
+    string name;
+    vector <string> postBody;
+    vector <string> postTopic;
+    vector <string> follower;
+
+    Node(string id, string name) {
+        this->id = id;
+        this->name = name;
+    }
+};
+
+vector<Node*> toNodes(vector <string> tags) {
+    vector<Node*> users;
+    for (int i = 0; i < tags.size(); i++) {
+        if (tags[i] == "user"){
+            users.push_back(new Node(tags[i + 2],tags[i+5]));
+            int j = i+5;
+            while (tags[j] != "/user" && j+2<tags.size()) {
+
+                if (tags[j] == "post") {
+                    users[users.size()-1]->postBody.push_back(tags[j + 2]);
+                }
+                if (tags[j] == "follower") {
+                    users[users.size() - 1]->follower.push_back(tags[j + 2]);
+                }
+                if (tags[j] == "topic") {
+                    users[users.size() - 1]->postTopic.push_back(tags[j + 1]);
+                }
+                j++;
+            }
+        }
+    }
+    return users;
+}
+
+
+vector<Node*> users;
+
+void searchWordOrTopic(string word) {
+    for (Node* user : users) {
+        for (string post : user->postBody) {
+            if (post.find(word) != string::npos) {
+                cout << "User: " << user->name << endl;
+                cout << "Post: " << post << endl;
+            }
+        }
+        for (string topic : user->postTopic) {
+            if (topic.find(word) != string::npos) {
+                cout << "User: " << user->name << endl;
+                cout << "Topic: " << topic << endl;
+            }
+        }
+        for (string follower : user->follower) {
+            if (follower.find(word) != string::npos) {
+                cout << "User: " << user->name << endl;
+                cout << "Follower: " << follower << endl;
+            }
+        }
+    }
+}
+
+int main() {
+    string word;
+    cout  << "Enter the word or topic to search: \n";
+    cin >> word;
+
+    searchWordOrTopic(word);
+
+    return 0;
+}
