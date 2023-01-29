@@ -34,17 +34,15 @@ vector<string> follower;
 
 
 
-
 vector<Node*> parsing()
-//int main()
 {
     str1 = take_file();
-    
+
     vector<Node*> tem;
-  
+
     int i=0;
     while(true){
-    char c; 
+    char c;
     c=str1[i++];
     if(c=='<' && str1[i]!='/' )// opening tag
     {  c=str1[i++];
@@ -69,7 +67,6 @@ vector<Node*> parsing()
          { string mi; c=str1[i++];
           while (c!='<') {mi+=c;c=str1[i++];}i--;
           tem[nUsers-1]->name=mi;
-
          }
          if (name=="posts")
          {
@@ -80,7 +77,7 @@ vector<Node*> parsing()
               while(c!='<') c=str1[i++];i--;
          }
          if (name=="body")
-         {string  body;
+         {string  body; c=str1[i++];
               while (c!='<') {body+=c;c=str1[i++];}i--;
            tem[nUsers-1]->postBody.push_back(body);
 
@@ -91,7 +88,7 @@ vector<Node*> parsing()
               while(c!='<') c=str1[i++];i--;
          }
          if (name=="topic")
-         {string  topic;
+         {string  topic; c=str1[i++];
              while (c!='<') {topic+=c;c=str1[i++];}i--;
 
           tem[nUsers-1]->postTopic.push_back(topic);
@@ -101,7 +98,7 @@ vector<Node*> parsing()
               while(c!='<') c=str1[i++];i--;
          }
          if (name=="follower")
-         { string follow;
+         { string follow;c=str1[i++];
               while(c!='<') c=str1[i++]; i--;
           c=str1[i++];
           if(c=='<' && str1[i]!='/' ){
@@ -112,16 +109,16 @@ vector<Node*> parsing()
         string fId;
        while (c!='<') {fId+=c;c=str1[i++];}i--;
        tem[nUsers-1]->follower.push_back(fId);}}
-
        }
     }
 
 
    if(c=='<'&&str1[i]=='/') //closing tag
       {  c=str1[i++];
-          while(c!='<')c=str1[i++];i--;}
-        } return tem;
-        }
+          while(c!='<')c=str1[i++];i--; }
+       }
+
+        return tem;}
 
 void addEdge(vector<int> adj[],int first,int second)
 {
