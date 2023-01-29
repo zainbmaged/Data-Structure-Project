@@ -61,7 +61,7 @@ bool valid(){
                             data = data + b[l];
 
                         }
-                        if ((data == "" )||( isspace(data[1])))//nested tag
+                        if (data == "" )//nested tag
                         {
                           b.insert(i - 1, right_closing_tag);//********
                             s.pop();
