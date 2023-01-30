@@ -7,19 +7,29 @@ string str1 ;
 int nUsers;
 
 
-string take_file(){
-    freopen("sample.xml","r",stdin);
+string readxml(string name)
+{
+	string contents;
+	string file_name = name;
+	ifstream xmlfile;
+	xmlfile.open(file_name);
+	if (xmlfile.fail())
+	{
+		cout << "file failed to open " << endl;
 
-    string s="";
+	}
+	string line, word;
+	while (!xmlfile.eof())//till end of file
+	{   //read line by line
+		getline(xmlfile, line);
+		contents += line;
 
-    while (!feof(stdin)){ // taking lines from the file and make it one line string
-        string k;
-        getline(cin,k);
-        s+=k;
-    }
 
-    return s;
+	}
+	xmlfile.close();
+	return contents;
 }
+
 
 
 
@@ -36,7 +46,7 @@ vector<string> follower;
 
 vector<Node*> parsing()
 {
-    str1 = take_file();
+     str1 = readxml("sample.xml");
     //cout<<str1;
     vector<Node*> tem;
 
