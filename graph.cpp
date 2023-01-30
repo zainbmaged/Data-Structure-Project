@@ -116,3 +116,9 @@ vector<Node*> parsing()
 
         }return tem;}
 
+int main()
+{
+    vector<Node*> users;
+    users=parsing(); return 0;}
+
+
