@@ -37,11 +37,12 @@ vector<string> follower;
 vector<Node*> parsing()
 {
     str1 = take_file();
-
+    //cout<<str1;
     vector<Node*> tem;
 
     int i=0;
-    for (int v = 0; v < str1.length(); v++){
+   while(1){
+    string check;
     char c;
     c=str1[i++];
     if(c=='<' && str1[i]!='/' )// opening tag
@@ -94,11 +95,11 @@ vector<Node*> parsing()
          {
               while(c!='<') c=str1[i++];i--;
          }
-        
+
  if (name=="follower")
-         { string follow;c=str1[i++];
-              while(c!='<') c=str1[i++]; i--;
-          c=str1[i++];
+         { string follow;//c=str1[i++];
+              while(c!='<') c=str1[i++]; //i--;
+         // c=str1[i++];
           if(c=='<' && str1[i]!='/' ){
           c=str1[i++];
         while (c!='>') {follow+=c;c=str1[i++];}
@@ -107,18 +108,24 @@ vector<Node*> parsing()
         string fId;
        while (c!='<') {fId+=c;c=str1[i++];}i--;
        tem[nUsers-1]->follower.push_back(fId);}}
-       }
+       } }
 
    if(c=='<'&&str1[i]=='/') //closing tag
-      {
-          while(c!='<')c=str1[i++];i--; }
-       }
+      { //string check;
+          c=str1[i++];c=str1[i++];
+          while(c!='>') {check+=c;c=str1[i++];}i--;
+            c=str1[i++];
+      }
+    if(check=="users") break;
 
-        }return tem;}
+        }
+
+        return tem;}
 
 int main()
-{
-    vector<Node*> users;
-    users=parsing(); return 0;}
-
+{  //vector<int> *adj = new vector<int>[V];
+    vector<Node*> users; //cout<<"Reem";
+    users=parsing();
+   // cout<<users.size(); 
+    return 0;}
 
