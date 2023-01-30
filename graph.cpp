@@ -116,39 +116,3 @@ vector<Node*> parsing()
 
         }return tem;}
 
-void addEdge(vector<int> adj[],int first,int second)
-{
-    adj[first].push_back(second);
-     adj[second].push_back(first);
-}
-
-int main()
-{
-    vector<Node*> users = parsing();
-     int c=users.size();
-     cout<< c;
-    for(int z=0;z<c;z++){
-        cout<<users[z]->id<<" ";
-
-    }
-   // for (int x;x<nUsers;x++)
-
-    vector<int> adj[c];
-    for(auto x: users)
-    {
-       int s=x->follower.size();cout<<s<<"RTTY";
-       for(int i=0;i<s;s++)
-       {string idd=x->id;
-        int iddd=stoi(idd);
-        string t=x->follower[i];
-       int tt=stoi(t);
-       //addEdge(adj,iddd,tt);
-      // cout<<"Reeeem";
-
-       }
-    }
-    
-
-
-        return 0;
-}
