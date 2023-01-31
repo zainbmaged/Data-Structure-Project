@@ -9,14 +9,14 @@
 #include <cstring>
 #include <stack>
 #include<algorithm>
-
+#include<queue>
 #pragma warning(suppress : 4996)
 
 using namespace std;
+string str1;
+int nUsers;
 
 
-
-//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to read xml file line by line  and return it in one string in one string O(n)----> n is number of lines in xml file
 string readxml(string name)
 {
@@ -40,41 +40,8 @@ string readxml(string name)
     xmlfile.close();
     return contents;
 }
-//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//saving tags  in vector by processing xmlstring char by char O(n)----> n is number of chars in xml file
-vector <string> tags(string xmlstring) {
-    vector <string> tag;
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    for (int i = 0; i < xmlstring.length(); i++)
-    {
-        string tag_name = "";
-        string tag_value = "";
-        //for  tags
-        if (xmlstring[i] == '<') {
-            // save opening tag name and closing tag name/
-            for (i = i + 1; xmlstring[i] != '>'; i++)
-            {
-                tag_name = tag_name + xmlstring[i];
-            }
-            //push  tag into the vector
-            tag.push_back(tag_name);
-
-
-            for (int k = i + 1; xmlstring[k] != '<' && k < xmlstring.length(); k++) {
-                if ((xmlstring[k] != ' ' || xmlstring[k - 1] != ' ') && (xmlstring[k] != ' ' || xmlstring[k - 1] != '>') && (xmlstring[k] != '<' || xmlstring[k - 1] != ' ') && (xmlstring[k] != '\t' || xmlstring[k] != ' ') && (xmlstring[k] != ' ' || xmlstring[k - 1] != '\t')) {
-                    tag_value = tag_value + xmlstring[k]; // a value
-                }
-            }
-            if (tag_value != "") tag.push_back(tag_value);
-        }
-        else continue; // if not "<" 
-    }
-
-
-    return tag;//returning tag vector
-}
-//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// class nodes 
 class Node {
 public:
     string id;
@@ -82,109 +49,244 @@ public:
     vector < string> postBody;
     vector < string> postTopic;
     vector<string> follower;
-    int size = 0;
-    Node(string id, string name) {
-        this->id = id;
-        this->name = name;
-        size++;
-    }
-    
+    vector<Node*> children;
 };
 
-
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//function to construct user nodes and insert followers , posts and topics for each
-vector<Node*> toNodes(vector <string> tags) {
-    vector<Node*> users;
-    for (int i = 0; i < tags.size(); i++) {
-        if (tags[i] == "user") {
-            users.push_back(new Node(tags[i + 2], tags[i + 5]));
-            int j = i + 5;
-            while (tags[j] != "/user" && j + 2 < tags.size()) {
+// creating user nodes and adding attributes of each
+vector<Node*> parsing()
+{
+    str1 = readxml("D:\\sample.xml");
+    //cout<<str1;
+    vector<Node*> tem;
 
-                if (tags[j] == "post") {
-                    users[users.size() - 1]->postBody.push_back(tags[j + 2]);
+    int i = 0;
+    while (1) {
+        string check;
+        char c;
+        c = str1[i++];
+        if (c == '<' && str1[i] != '/')// opening tag
+        {
+            c = str1[i++];
+            string name;
+            while (c != '>') { name += c; c = str1[i++]; }
+            if (name == "users")
+            {
+                while (c != '<')c = str1[i++]; i--;
+            }
+            if (name == "user")
+            {
+                nUsers++; tem.push_back(new Node);
+                while (c != '<')c = str1[i++]; i--;
+            }
+
+            if (name == "id")
+            {
+                string text; c = str1[i++];
+                while (c != '<') { text += c; c = str1[i++]; }
+                i--; tem[nUsers - 1]->id = text;
+            }
+            if (name == "name")
+            {
+                string mi; c = str1[i++];
+                while (c != '<') { mi += c; c = str1[i++]; }i--;
+                tem[nUsers - 1]->name = mi;
+            }
+            if (name == "posts")
+            {
+                while (c != '<') c = str1[i++]; i--;
+            }
+            if (name == "post")
+            {
+                while (c != '<') c = str1[i++]; i--;
+            }
+            if (name == "body")
+            {
+                string  body; c = str1[i++];
+                while (c != '<') { body += c; c = str1[i++]; }i--;
+                tem[nUsers - 1]->postBody.push_back(body);
+            }
+            if (name == "topics")
+            {
+                while (c != '<') c = str1[i++]; i--;
+            }
+            if (name == "topic")
+            {
+                string  topic; c = str1[i++];
+                while (c != '<') { topic += c; c = str1[i++]; }i--;
+                tem[nUsers - 1]->postTopic.push_back(topic);
+            }
+            if (name == "followers")
+            {
+                while (c != '<') c = str1[i++]; i--;
+            }
+
+            if (name == "follower")
+            {
+                string follow;//c=str1[i++];
+                while (c != '<') c = str1[i++]; //i--;
+           // c=str1[i++];
+                if (c == '<' && str1[i] != '/') {
+                    c = str1[i++];
+                    while (c != '>') { follow += c; c = str1[i++]; }
+                    if (follow == "id") {
+                        c = str1[i++];
+                        string fId;
+                        while (c != '<') { fId += c; c = str1[i++]; }i--;
+                        tem[nUsers - 1]->follower.push_back(fId);
+                    }
                 }
-                if (tags[j] == "follower") {
-                    users[users.size() - 1]->follower.push_back(tags[j + 2]);
-                }
-                if (tags[j] == "topic") {
-                    users[users.size() - 1]->postTopic.push_back(tags[j + 1]);
-                }
-                j++;
             }
         }
+
+        if (c == '<' && str1[i] == '/') //closing tag
+        { //string check;
+            c = str1[i++]; c = str1[i++];
+            while (c != '>') { check += c; c = str1[i++]; }i--;
+            c = str1[i++];
+        }
+        if (check == "users") break;
+
     }
-    return users;
+
+    return tem;
 }
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//creating root with children user
+Node* users_root(vector<Node*> users) {
+    Node* root = new Node();
+    for (Node* user : users) {
+        (root->children).push_back(user);
+    }
+    return root;
+}
+
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Network Analysis Functions
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-//who is the most influencer user (has the most followers)O(n*m) n is users number and m is followers of most infulencer
-string Influncer(vector<Node*> users) {
-    int max_followers=0;
+//who is the most influencer user (has the most followers)O(n) n is users number 
+string Influncer(Node* root) {
+    int max_followers = 0;
     string influncer;
-    for (Node* user : users) {
-        if (user->follower.size() > max_followers) {
-            influncer = user->name;
-            max_followers = user->follower.size();
+
+    if (root == NULL)
+        return "0";
+    // using level order traversal 
+    // using queue
+    queue<Node*> q;  // Create a queue
+    q.push(root); // Enqueue root
+    while (!q.empty())
+    {
+        int n = q.size();
+
+        // If this node has children
+        while (n > 0)
+        {
+            // Dequeue an item from queue and print it
+            Node* p = q.front();
+            q.pop();
+            
+
+            // Enqueue all children of the dequeued item
+            for (int i = 0; i < p->children.size(); i++) {
+                q.push(p->children[i]);
+                if (p->children[i]->follower.size() > max_followers) {
+                    influncer = p->children[i]->name;
+                    max_followers = p->children[i]->follower.size();
+                }
+            }
+            n--;
         }
+
     }
+    
     return influncer;
 }
 
-//who is the most active user (connected to lots of users) O(n^2*m) n is number of users m is max followers of any user
-string Active(vector<Node*> users) {
+//who is the most active user (connected to lots of users) O(n^2) n is number of users m is max followers of any user
+string Active(Node* root) {
+
     int max_following = 0;
-    
     string active;
     int tem = 0;
-    for (Node* user : users) {
-        for (Node* useri : users) {
-            for (string follower : useri->follower) {
-                if (user->id == follower) {
-                    tem ++;
+    
+    
+    if (root == NULL)
+        return "0";
+    // using level order traversal 
+    // using queue
+    queue<Node*> q;  // Create a queue
+    q.push(root); // Enqueue root
+    while (!q.empty())
+    {
+        int n = q.size();
+
+        // If this node has children
+        while (n > 0)
+        {
+            // Dequeue an item from queue and print it
+            Node* p = q.front();
+            q.pop();
+
+
+            // Enqueue all children of the dequeued item
+            for (int i = 0; i < p->children.size(); i++) {
+                q.push(p->children[i]);
+                for (int j = 0; j < p->children.size();j++) {
+                    for (int k = 0; k < p->children[j]->follower.size(); k++) {
+                        if (p->children[j]->follower[k] == p->children[i]->id) {
+                            tem++;
+                        }
+                    }
+               }
+                if (tem > max_following) {
+                    max_following = tem;
+                    tem = 0;
+                    active = p->children[i]->name;
+                }
+                else {
+                    tem = 0;
                 }
             }
+            
+            n--;
+        }
 
-        }
-        if (tem > max_following) {
-            max_following = tem;
-            tem = 0;
-            active = user->name;
-        }
-        else {
-            tem = 0;
-        }
     }
-    
+
     return active;
 }
 
 //the mutual followers between 2 users O(n*m) n is followers of 1st and m is followers of 2nd
-vector<string> common_followers(Node* user1, Node* user2, vector<Node*> users) {
+vector<string> common_followers(Node* user1, Node* user2, Node* root) {
     vector<string> common_follower;
+
+
+
+
     for (string followers1 : user1->follower) {
         for (string followers2 : user2->follower) {
-            if (followers1 == followers2 ) {
-                common_follower.push_back(users[stoi(followers1)-1]->name);
+            if (followers1 == followers2) {
+                common_follower.push_back(root->children[stoi(followers1) - 1]->name);
                 //avoiding redundancy
-                sort(common_follower.begin(),common_follower.end());
+                sort(common_follower.begin(), common_follower.end());
                 common_follower.erase(unique(common_follower.begin(), common_follower.end()), common_follower.end());
             }
         }
     }
+
+
     return common_follower;
 }
 
 //for each user, suggest a list of users to follow (the followers of his followers) O(n^2)
-vector<string> suggested_followers(Node* user, vector<Node*> users) {
+vector<string> suggested_followers(Node* user, Node* root) {
     vector<string> suggested_follower;
     for (string followers : user->follower) {
-        for (string followers2 : users[stoi(followers) -1]->follower) {
+        for (string followers2 : root->children[stoi(followers) - 1]->follower) {
             if (followers2 != user->id) {
-                suggested_follower.push_back(users[stoi(followers2)-1]->name);
+                suggested_follower.push_back(root->children[stoi(followers2) - 1]->name);
                 //avoiding redundancy
                 sort(suggested_follower.begin(), suggested_follower.end());
                 suggested_follower.erase(unique(suggested_follower.begin(), suggested_follower.end()), suggested_follower.end());
@@ -196,36 +298,34 @@ vector<string> suggested_followers(Node* user, vector<Node*> users) {
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 int main()
-{
-    string xml_file = readxml("D:\\sample.xml");
-
-    // call function tags to save all tages in tag vector to be used next
-    vector <string> tag = tags(xml_file);
-    //call function tonodes to convert tags to nodes 
-    vector<Node*> users = toNodes(tag);
+{  
+    //creating users nodes
+    vector<Node*> users; 
+    users = parsing();
+    //creating tree of users
+    Node* root = users_root(users);
 
     //testing Network Analysis function
     // 
     //who is the most influencer user (has the most followers)
-    string influncer = Influncer(users);
-    cout << influncer<<endl;
+    string influncer = Influncer(root);
+    cout << influncer << endl;
 
     //who is the most active user (connected to lots of users)
-    string active = Active(users);
+    string active = Active(root);
     cout << active << endl;
 
     //the mutual followers between 2 users
-    vector<string> common = common_followers(users[1],users[2],users);
+    vector<string> common = common_followers(users[1], users[2], root);
     for (int i = 0; i < common.size(); i++) {
-        cout << common[i]<<",";
+        cout << common[i] << ",";
     }
-    cout  << endl;
+    cout << endl;
 
     //for each user, suggest a list of users to follow
-    vector<string> suggested = suggested_followers(users[0], users);
+    vector<string> suggested = suggested_followers(users[0],root);
     for (int i = 0; i < suggested.size(); i++) {
         cout << suggested[i] << "-";
     }
-
     return 0;
 }
