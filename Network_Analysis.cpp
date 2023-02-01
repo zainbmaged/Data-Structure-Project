@@ -54,9 +54,9 @@ public:
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // creating user nodes and adding attributes of each
-vector<Node*> parsing()
+vector<Node*> parsing(string path)
 {
-    str1 = readxml("D:\\sample.xml");
+    str1 = readxml(path);
     //cout<<str1;
     vector<Node*> tem;
 
@@ -186,7 +186,7 @@ string Influncer(Node* root) {
             // Dequeue an item from queue and print it
             Node* p = q.front();
             q.pop();
-            
+
 
             // Enqueue all children of the dequeued item
             for (int i = 0; i < p->children.size(); i++) {
@@ -200,7 +200,7 @@ string Influncer(Node* root) {
         }
 
     }
-    
+
     return influncer;
 }
 
@@ -210,8 +210,8 @@ string Active(Node* root) {
     int max_following = 0;
     string active;
     int tem = 0;
-    
-    
+
+
     if (root == NULL)
         return "0";
     // using level order traversal 
@@ -233,13 +233,13 @@ string Active(Node* root) {
             // Enqueue all children of the dequeued item
             for (int i = 0; i < p->children.size(); i++) {
                 q.push(p->children[i]);
-                for (int j = 0; j < p->children.size();j++) {
+                for (int j = 0; j < p->children.size(); j++) {
                     for (int k = 0; k < p->children[j]->follower.size(); k++) {
                         if (p->children[j]->follower[k] == p->children[i]->id) {
                             tem++;
                         }
                     }
-               }
+                }
                 if (tem > max_following) {
                     max_following = tem;
                     tem = 0;
@@ -249,7 +249,7 @@ string Active(Node* root) {
                     tem = 0;
                 }
             }
-            
+
             n--;
         }
 
@@ -298,11 +298,12 @@ vector<string> suggested_followers(Node* user, Node* root) {
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 int main()
-{  
+{
     //creating users nodes
-    vector<Node*> users; 
-    users = parsing();
-    //creating tree of users
+    vector<Node*> users;
+    // add path here
+    users = parsing("D:\\sample.xml");
+    //creating root for users
     Node* root = users_root(users);
 
     //testing Network Analysis function
@@ -323,7 +324,7 @@ int main()
     cout << endl;
 
     //for each user, suggest a list of users to follow
-    vector<string> suggested = suggested_followers(users[0],root);
+    vector<string> suggested = suggested_followers(users[0], root);
     for (int i = 0; i < suggested.size(); i++) {
         cout << suggested[i] << "-";
     }
