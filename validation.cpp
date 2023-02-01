@@ -80,12 +80,12 @@ string correcterrors(vector<string> xml_data){
                 tag += xml_data[i][j];
                 j++;
             }
-            if(!tag_stack.empty()){
+            if(!tag_stack.empty()){//checking error
                 if (tag_stack.top() == tag) {
                     output += xml_data[i];
                     tag_stack.pop();
                 }
-                else{
+                else{ //correct error
                     output+="</"+tag_stack.top()+">";
                     tag_stack.pop();
                 }
