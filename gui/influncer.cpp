@@ -197,44 +197,7 @@ string Influncer (string path)
 //Network Analysis Functions
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-//who is the most influencer user (has the most followers)O(n) n is users number 
-string Influncer(Node* root) {
-    int max_followers = 0;
-    string influncer;
 
-    if (root == NULL)
-        return "0";
-    // using level order traversal 
-    // using queue
-    queue<Node*> q;  // Create a queue
-    q.push(root); // Enqueue root
-    while (!q.empty())
-    {
-        int n = q.size();
-
-        // If this node has children
-        while (n > 0)
-        {
-            // Dequeue an item from queue and print it
-            Node* p = q.front();
-            q.pop();
-
-
-            // Enqueue all children of the dequeued item
-            for (int i = 0; i < p->children.size(); i++) {
-                q.push(p->children[i]);
-                if (p->children[i]->follower.size() > max_followers) {
-                    influncer = p->children[i]->name;
-                    max_followers = p->children[i]->follower.size();
-                }
-            }
-            n--;
-        }
-
-    }
-
-    return influncer;
-}
 
 
 
