@@ -12,9 +12,11 @@ Sara Ramadan Mohamed |1901309
 
 ## In this repo
 The following is included
-1.Readme file
-2.test cases of sample xml to be used in testing code
-3.gui folder doesn't contain gui itself but updated version of code to be used in gui
+
+
+1. Readme file
+2. test cases of sample xml to be used in testing code
+3. gui folder doesn't contain gui itself but updated version of code to be used in gui
 4. src folder containng used functions
 5. header folder contains .h files used in running code 
 ## Submission
