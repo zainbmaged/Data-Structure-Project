@@ -183,10 +183,10 @@ string suggested_followers(string user1, string path)
             if (suggested_follower[m] == followers) {
                 suggested_follower.erase(suggested_follower.begin() + m, suggested_follower.begin() + m+1);
                k--;
+               m = k;
             }
         }
         m++;
-        m = k;
     }
     string suggest = "";
     for (string suggested : suggested_follower) {
