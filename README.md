@@ -26,6 +26,7 @@ program.
 2. You will need to write a report to describe the project. Imagine that you are describing the
 project/ data structures used to someone who has a coding background but who doesn't
 know much about the project.
+ Report link: [https://docs.google.com/document/d/1JbQu6r932H0QYJfBe99H1CyQLlGg2Vtd/edit?usp=sharing&ouid=113656671217341831442&rtpof=true&sd=true]
   - The document should contain a number of words in the range of 1000 to 2000 words 
     and should contain diagrams/ screenshots that demonstrate the project’s
     background and implementation details.
@@ -33,7 +34,7 @@ know much about the project.
          details and complexity of operations.
   - The report should contain a references section where the resources that you have
          used during the project are listed.
-         
+3. drive link for gui .exe : [https://drive.google.com/drive/folders/1_yHvp4t5P8AA_iFQtNl75X8bBkxNGKi4?usp=sharing]
 ## References
 1-for syntax : [https://www.geeksforgeeks.org/c-string-class-and-its-applications/]
          
