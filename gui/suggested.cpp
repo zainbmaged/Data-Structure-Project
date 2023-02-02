@@ -54,7 +54,7 @@ string suggested_followers(string user1, string path)
     }
     xmlfile.close();
     string str1 = contents;
-    int nUsers=0;
+    int nUsers = 0;
     //cout<<str1;
     vector<Node*> tem;
 
@@ -149,38 +149,47 @@ string suggested_followers(string user1, string path)
 
 
     //creating root with children user
-    
+
     Node* root = new Node();
     for (Node* user : tem) {
         (root->children).push_back(user);
     }
-    
+
     vector<string> suggested_follower;
     Node* use1 = new Node();
-    
+
     for (Node* user : root->children) {
         if (user->name == user1) {
-             use1 = user;
+            use1 = user;
         }
-        
+
     }
 
 
-        
-        for (string followers : use1->follower) {
-            for (string followers2 : root->children[stoi(followers) - 1]->follower) {
-                if (followers2 != use1->id) {
-                    suggested_follower.push_back(root->children[stoi(followers2) - 1]->name);
-                    //avoiding redundancy
-                    sort(suggested_follower.begin(), suggested_follower.end());
-                    suggested_follower.erase(unique(suggested_follower.begin(), suggested_follower.end()), suggested_follower.end());
-                }
+
+    for (string followers : use1->follower) {
+        for (string followers2 : root->children[stoi(followers) - 1]->follower) {
+            if (followers2 != use1->id ) {
+                suggested_follower.push_back(root->children[stoi(followers2) - 1]->id);
+                //avoiding redundancy
+                sort(suggested_follower.begin(), suggested_follower.end());
+                suggested_follower.erase(unique(suggested_follower.begin(), suggested_follower.end()), suggested_follower.end());
             }
         }
-        
+    }
+    int k = 0;
+    for (string suggested : suggested_follower) {
+        for (string followers : use1->follower) {
+            if (suggested == followers) {
+                suggested_follower.erase(suggested_follower.begin() + k, suggested_follower.end());
+            }
+        }
+        k++;
+    }
     string suggest = "";
     for (string suggested : suggested_follower) {
-        suggest += suggested;
+        
+        suggest += root->children[stoi(suggested) - 1]->name;
         suggest += "-";
     }
 
@@ -197,15 +206,15 @@ string suggested_followers(string user1, string path)
 
 int main()
 {
-    
+
 
     //testing Network Analysis function
     // 
     //suggested followers input one user name case sensitive and xml file path
-    string suggest = suggested_followers("Reem Hassan","D:\\sample.xml");
+    string suggest = suggested_followers("Sondos Ayman", "D:\\sample.xml");
     cout << suggest << endl;
 
-    
-   
+
+
     return 0;
 }
