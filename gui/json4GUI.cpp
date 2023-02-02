@@ -23,11 +23,8 @@ int main() {
 	cout << out;
 	return 0;
 }
-//taking file path 
-int XML_TO_JSON(string* input, string xml)
-{
-
-	// creating vector tags
+//saving tags  in vector by processing xmlstring char by char O(n)----> n is number of chars in xml file
+int XML_TO_JSON(string* input, string xml) {
 	vector <string> tag;
 	string xmlstring = xml;
 	for (int i = 0; i < xmlstring.length(); i++)
@@ -54,7 +51,9 @@ int XML_TO_JSON(string* input, string xml)
 		}
 		else continue; // if not "<" 
 	}
-	// saving json tags O(n)
+
+
+
 	vector <string> jsons; // for json tages
 	stack <string> temp;//for close bracket tags
 	int i = 0;
@@ -146,7 +145,6 @@ int XML_TO_JSON(string* input, string xml)
 		}
 
 	}
-	// saving json in stringstream and return it in one string
 	stringstream json; //stringstream to save json
 
 	json << '{' << '\n' << "  ";
@@ -194,6 +192,5 @@ int XML_TO_JSON(string* input, string xml)
 	}
 	json << '\n' << '}';
 	*input += json.str();
-
-	return 1;
+		return 1;
 }
