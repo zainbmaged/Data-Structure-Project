@@ -9,20 +9,39 @@
 
 
 using namespace std;
-
-int XML_TO_JSON(string* input, string xml_string);
-//driver program
-int main() {
-
-	// input file path in format "driver letter : \\ xml_file_name.xml"
-	 //read xml file in one string xml_file
-	string out = "";
+// Functions needed for json --------------------------------------------------------------------------------------------------------------------------------------
 
 
-	XML_TO_JSON(&out, "D:\\sample.xml");
-	cout << out;
-	return 0;
+
+//driver function--------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//function to read xml file line by line  and return it in one string in one string O(n)----> n is number of lines in xml file
+string readxml(string name)
+{
+	string contents;
+	string file_name = name;
+	ifstream xmlfile;
+	xmlfile.open(file_name);
+	if (xmlfile.fail())
+	{
+		cout << "file failed to open " << endl;
+
+	}
+	string line, word;
+	while (!xmlfile.eof())//till end of file
+	{   //read line by line
+		getline(xmlfile, line);
+		contents += line;
+
+
+	}
+	xmlfile.close();
+	return contents;
 }
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //saving tags  in vector by processing xmlstring char by char O(n)----> n is number of chars in xml file
 int XML_TO_JSON(string* input, string xml) {
 	vector <string> tag;
@@ -193,4 +212,20 @@ int XML_TO_JSON(string* input, string xml) {
 	json << '\n' << '}';
 	*input += json.str();
 		return 1;
+}
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+int main() {
+
+	// input file path in format "driver letter : \\ xml_file_name.xml"
+	 //read xml file in one string xml_file
+	string xml_file = readxml("D:\\sample.xml");
+	string out = "";
+
+
+	XML_TO_JSON(&out, xml_file);
+	cout << out;
+
+
 }
