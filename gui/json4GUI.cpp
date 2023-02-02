@@ -10,45 +10,26 @@
 
 using namespace std;
 
-int XML_TO_JSON(string* input, string path);
+int XML_TO_JSON(string* input, string xml_string);
 //driver program
 int main() {
 
 	// input file path in format "driver letter : \\ xml_file_name.xml"
 	 //read xml file in one string xml_file
-	string out="";
-	
-	
-     XML_TO_JSON(&out, "D:\\sample.xml");
-	 cout << out;
-	 return 0;
+	string out = "";
+
+
+	XML_TO_JSON(&out, "D:\\sample.xml");
+	cout << out;
+	return 0;
 }
 //taking file path 
-int XML_TO_JSON( string *input,string path)
+int XML_TO_JSON(string* input, string xml)
 {
 
-	//reading xml file in one string
-	string contents;
-	string file_name = path;
-	ifstream xmlfile;
-	xmlfile.open(file_name);
-	if (xmlfile.fail())
-	{
-		cout << "file failed to open " << endl;
-
-	}
-	string line, word;
-	while (!xmlfile.eof())//till end of file
-	{   //read line by line
-		getline(xmlfile, line);
-		contents += line;
-
-
-	}
-	xmlfile.close();
 	// creating vector tags
 	vector <string> tag;
-	string xmlstring = contents;
+	string xmlstring = xml;
 	for (int i = 0; i < xmlstring.length(); i++)
 	{
 		string tag_name = "";
