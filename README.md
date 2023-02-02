@@ -10,7 +10,13 @@ Zainb Maged Arafa Zahran|1901420
 Nada Waleed Mohammed Ebed| 1901544
 Sara Ramadan Mohamed |1901309
 
-
+## In this repo
+The following is included
+1.Readme file
+2.test cases of sample xml to be used in testing code
+3.gui folder doesn't contain gui itself but updated version of code to be used in gui
+4. src folder containng used functions
+5. header folder contains .h files used in running code 
 ## Submission
 
 1. You will need to submit a short video to demonstrate the different features of the
