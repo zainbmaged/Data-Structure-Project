@@ -177,14 +177,16 @@ string suggested_followers(string user1, string path)
             }
         }
     }
-    int k = 0;
-    for (string suggested : suggested_follower) {
+   int m = 0;
+    for (int k = 0; k < suggested_follower.size();k++) {
         for (string followers : use1->follower) {
-            if (suggested == followers) {
-                suggested_follower.erase(suggested_follower.begin() + k, suggested_follower.end());
+            if (suggested_follower[m] == followers) {
+                suggested_follower.erase(suggested_follower.begin() + m, suggested_follower.begin() + m+1);
+               k--;
             }
         }
-        k++;
+        m++;
+        m = k;
     }
     string suggest = "";
     for (string suggested : suggested_follower) {
