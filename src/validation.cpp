@@ -1,105 +1,128 @@
 #include <iostream>
-#include <stack>
 #include <string>
-#include<vector>
+#include <vector>
+#include <stack>
+#include <fstream>
 using namespace std;
 
-
-
-vector<pair<string,int>>detecterrors(vector<string> xml_data) {
-    vector<pair<string,int>>errors;
-    stack <string>  tag_stack;
-    string tag="";
-
-    for(size_t i=0;i < xml_data.size();i++) {
-        // pushing in the stack
-        if (xml_data[i][0] == '<' && xml_data[i][1] != '!' && xml_data[i][1] != '?' && xml_data[i][1] != '/') { //not comment
-            int j =1;    // there is open tag
-            tag ="";
-            while (xml_data[i][j] != ' '&& xml_data[i][j] != '>') {
-                tag += xml_data[i][j];  //open tag name
-                j++;
-            }
-            tag_stack.push(tag);
-        }
-        //poping from the stack
-        else if (xml_data[i][0] == '<' && xml_data[i][1] == '/') {
-            int j =2; //there is closed tag
-            tag ="";
-            while (xml_data[i][j] != ' ' && xml_data[i][j] != '>') {
-                tag += xml_data[i][j]; //close tag name
-                j++;
-            }//checking
-            if(!tag_stack.empty()){
-                if (tag_stack.top() == tag) {
-                    tag_stack.pop();
-                }
-                else{
-                    errors.push_back({tag,i});
-                    tag_stack.pop();
-
-                }
-            }
-        }
-    }
-
-
-    int l =xml_data.size();
-    if(!tag_stack.empty()){
-        errors.push_back({tag_stack.top(),l} );
-        l++;
-        tag_stack.pop();
-    }
-    return errors;
+string read_file(){
+    ifstream xml_file;
+    char c;
+    string s;
+    xml_file.open("C:\\Users\\dell\\Downloads\\sample.xml");
+    xml_file.get(c);
+    while(!xml_file.eof())
+    {
+        s=s+c;
+        xml_file.get(c);
+    }xml_file.close();
+    return s;
 }
 
+bool valid(){
+    string b=read_file();
+    stack<string>s;
+    stack <int> nm;
+    while (1){
+    for (int i = 0;i< b.size(); i++){
+        string opening_tag_name = "";
+        string closing_tag_name = "";
 
-
-
-string correcterrors(vector<string> xml_data){
-    stack <string>  tag_stack;
-    string output="";
-    string tag="";
-    for(size_t i=0;i < xml_data.size();i++) {
-        // pushing in the stack
-        if (xml_data[i][0] == '<' && xml_data[i][1] != '!' && xml_data[i][1] != '?' && xml_data[i][1] != '/') {
-            int j =1;    // to cut the chars of the tag
-            tag ="";
-            output += xml_data[i];
-            while (xml_data[i][j] != ' '&& xml_data[i][j] != '>') {
-                tag += xml_data[i][j];
-                j++;
-            }
-            tag_stack.push(tag);
-        }
-        //poping from the stack
-        else if (xml_data[i][0] == '<' && xml_data[i][1] == '/') {
-            int j =2;
-            tag ="";
-            while (xml_data[i][j] != ' ' && xml_data[i][j] != '>') {
-                tag += xml_data[i][j];
-                j++;
-            }
-            if(!tag_stack.empty()){//checking error
-                if (tag_stack.top() == tag) {
-                    output += xml_data[i];
-                    tag_stack.pop();
+        if (b[i] == '<')
+    {
+            switch (b[i + 1])
+            {
+            case'!':
+                break;
+            case'?':
+                break;
+            case'/':
+            { //extracting closing tag name
+                 for (int j = i + 2; b[j] != '>'; j++)
+                {
+                    closing_tag_name = closing_tag_name +b[j];
                 }
-                else{ //correct error
-                    output+="</"+tag_stack.top()+">";
-                    tag_stack.pop();
+            if (!s.empty() && s.top() == closing_tag_name)
+                {
+                    s.pop();
+                    nm.pop();
                 }
+                else if (!s.empty() && s.top() != closing_tag_name)
+                {  cout << "ERROR! the closing tag " << closing_tag_name << " Not Matching the opening tag " << s.top() << endl;
+                  while (s.top() != closing_tag_name)
+
+                    {
+                        string closetag = "</" + closing_tag_name + ">";
+                        string right_closing_tag = "</" + s.top() + ">";//must be added
+                        string data = "";
+                        string opentag_of_right_closing_tag = "<" + s.top() + ">"; //tag(top of stack)
+                        for (int l = nm.top()+ opentag_of_right_closing_tag.length(); b[l] != '<'; l++)
+                        {
+                            data = data + b[l];
+
+                        }
+                        if (data == "" )
+                            //||( isspace(data[1])))//nested tag
+                        {
+                          b.insert(i -1, right_closing_tag);//********
+                            s.pop();
+                            nm.pop();
+                        }
+                        else
+                        {
+                            b.insert(nm.top()+ opentag_of_right_closing_tag.length() + data.length(), right_closing_tag);
+                            s.pop();
+                            nm.pop();
+                        }
+                    }
+                    break;
+                }//end else if 1
+                ///////////////////////////////////////////////////////////////
+                else if (s.empty())
+                {    cout << "ERROR! the closing tag " << closing_tag_name << " without opening tag" << endl;
+                 b.erase(i, closing_tag_name.length() + 1);}
+               //////////////////////////////////////////////////////////////
+                break;
             }
+            default:
+            {
+                //extracting opening tag name
+                for (int k = i + 1; b[k] != '>'; k++)
+                {
+                    opening_tag_name = opening_tag_name + b[k];
+                }
+                s.push(opening_tag_name);
+                 nm.push(i);
+                break;
+            }
+            }
+            continue;
+    }//end if
+   else
+            continue;
+    }//end for
+
+    if (s.empty())
+    { cout << b<< endl;
+        cout << "The XML File is valid" << endl;
+        //cout << b;
+        return true;
+    }
+    else
+    {
+       cout << "ERROR! opening tag " << s.top() << " without closing tag " << endl;
+       //handling ERROR
+        while (!s.empty())
+        {
+            string missing_close_tag = "</" + s.top() + ">";
+           b = b + missing_close_tag;
+            s.pop();
+            nm.pop();
         }
-        //to show the text
-        else {
-            output+=xml_data[i];
-        }
+
     }
 
-    if(!tag_stack.empty()){
-        output+="</"+tag_stack.top()+">";
-        tag_stack.pop();
-    }
-    return output;
-}
+}}//end fun
+
+
+
